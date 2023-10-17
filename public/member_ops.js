@@ -11,7 +11,7 @@ function handle_ajax(event) {
   const memberID = document.getElementById('member-id');
   const firstName1 = document.getElementById('member-firstName1');
   const lastName1 = document.getElementById('member-lastName1');
-  const members_path = 'http://localhost:3000/api/v1/members';
+  const members_path = '/api/v1/members';
 
   restOpsDiv.addEventListener('click', (event) => {
     if (event.target === listMembersButton) {

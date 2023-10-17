@@ -9,7 +9,7 @@ function handle_session() {
   const userPassword = document.getElementById('user-password');
   const userEmail1 = document.getElementById('user-email1');
   const userPassword1 = document.getElementById('user-password1');
-  const users_path = 'http://localhost:3000/users';
+  const users_path = '/users';
 
   restOpsDiv.addEventListener('click', (event) => {
     if (event.target === logonButton) {
