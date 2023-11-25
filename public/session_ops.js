@@ -1,3 +1,5 @@
+import { getCookie } from "./cookie_finder.js"
+
 function handle_session() {
   console.log('DOM fully loaded and parsed');
   const resultsDiv = document.getElementById('results-div');
@@ -32,12 +34,6 @@ function handle_session() {
             let parag = document.createElement('P');
             parag.textContent = JSON.stringify(data);
             resultsDiv.appendChild(parag);
-            response.headers.forEach(function(val, key) {
-              parag2 = document.createElement('P');
-              parag2.textContent = `${key} ${val}`
-              resultsDiv.appendChild(parag2);
-            });
-            localStorage.setItem("authHeader",response.headers.get('authorization'));
           });
         } else {
           alert(`Return code ${response.status} ${response.statusText}`);
@@ -76,10 +72,14 @@ function handle_session() {
         }
       });
     } else if (event.target === logoffButton) {
+      let headers = {};
+      let csrf_cookie = getCookie("CSRF-TOKEN");
+      if (csrf_cookie) {
+        headers = { 'X-CSRF-Token': csrf_cookie }
+      }
       fetch(`${users_path}/sign_out`,
         { method: 'DELETE',
-          headers: { 'Content-Type': 'application/json',
-            'authorization': localStorage.getItem("authHeader") },
+          headers: headers
         }
       ).then((response) => {
         if (response.status === 200) {
@@ -98,7 +98,6 @@ function handle_session() {
           });
         }
       });
-      localStorage.removeItem("authHeader");
     }
   });
 }
