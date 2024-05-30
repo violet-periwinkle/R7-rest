@@ -24,7 +24,7 @@ bin/bundle add strong_password
 
 Devise is a gem that enables authentication, and is widely used for that purpose in Rails applications. Devise, as we are using it, requires configuration of the Rails session. This is usually on by default, but in API only configurations, Rails turns it off, so we have to turn it back on. Add the following two lines to the config/application.rb, just before the two end statements at the bottom of this file:  
 
-```
+```ruby
 config.middleware.use ActionDispatch::Cookies
 config.middleware.use ActionDispatch::Session::CookieStore
 ```
@@ -41,7 +41,7 @@ bin/rails db:migrate
 
 Update the app/models/user.rb file as follows:
 
-```
+```ruby
 class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, email: true
   validates :password, password_strength: true
@@ -71,7 +71,7 @@ bin/rails g controller test
 
 Edit app/controllers/users/registrations\_controller.rb, to match the following:
 
-```
+```ruby
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
@@ -95,7 +95,7 @@ end
 
 It is not really obvious what this controller does, but it overrides the Devise controller to handle JSON responses. The same is true of app/controllers/users/sessions\_controller.rb, which should be changed to match this:
 
-```
+```ruby
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
@@ -132,7 +132,7 @@ end
 
 In general, REST operations other than registration and logon require authentication. So we need a method to verify that a user has been authenticated. We create that method in a new file you should create, app/controllers/concerns/authentication\_check.rb, as follows:
 
-```
+```ruby
 module AuthenticationCheck
   extend ActiveSupport::Concern
   
@@ -147,7 +147,7 @@ end
 
 This is the standard way of creating a method that will be accessible to a variety of controllers. Now, edit app/controllers/test\_controller.rb to match the following. You will see that it calls the method is\_user\_logged\_in.
 
-```
+```ruby
 class TestController < ApplicationController
   include AuthenticationCheck
 
@@ -166,7 +166,7 @@ This is just a test controller to verify that login works.
 
 Now we need to configure routes for the controllers that have been created. config/routes.rb should be edited to match the following:
 
-```
+```ruby
 Rails.application.routes.draw do
   devise_for :users,
              controllers: {
@@ -247,7 +247,7 @@ We want to implement authorization as well as authentication. Each user will hav
 
 Next you edit the model files. The file app/models/member.rb should look like this:
 
-```
+```ruby
 class Member < ApplicationRecord
   belongs_to :user
   validates :first_name, presence: true
@@ -259,7 +259,7 @@ end
 
 And app/models/fact.rb should look like this:
 
-```
+```ruby
 class Fact < ApplicationRecord
   validates :fact_text, presence: true
   validates :likes, presence: true
@@ -287,7 +287,7 @@ bin/rails g controller api/v1/Facts
 
 Next you set up your routes. You should add the following section to your config/routes.rb file:
 
-```
+```ruby
   namespace :api do
     namespace :v1 do
       resources :members do
@@ -303,7 +303,7 @@ These routes are similar to what you have used before, with the exception that y
 
 Your application logic goes in your controllers. Because this is an API, there are no files corresponding to views. When a request comes in, the response will always render JSON, to send the responses in JSON format back to the caller. In other respects, the processing is much as in Rails UI applications. The HTTP status code returned will be, by default, 200, but there are other status codes that are appropriate sometimes. For example, 201 means resource created, and the 400 series codes imply a client side error. We will require authentication for access to these controller operations, so we need to include AuthenticationCheck and call is\_user\_logged\_in. This is an unfinished version of your app/controllers/api/v1/members\_controller.rb file:
 
-```
+```ruby
 class Api::V1::MembersController < ApplicationController
   include AuthenticationCheck
 
@@ -373,7 +373,7 @@ end
 
 You will have to complete the update and show methods yourself.. Include error handling! For the app/controllers/api/v1/facts\_controller.rb file, you can use the following outline, but most of the methods you will have to complete yourself.
 
-```
+```ruby
 class Api::V1::FactsController < ApplicationController
   include AuthenticationCheck
 
@@ -439,7 +439,7 @@ end
 
 The client application may send some bad JSON, or specify the id of a user or fact that does not exist. You need to catch those errors and return an appropriate error message and HTTP result code to the calling client application. This is done by creating an exception handler module, which is app/controllers/concerns/exception\_handler.rb:
 
-```
+```ruby
 # app/controllers/concerns/exception_handler.rb
 module ExceptionHandler
   # provides the more graceful `included` method
@@ -459,12 +459,11 @@ module ExceptionHandler
     end
   end
 end
-
 ```
 
 Then add this line to app/controllers/application\_controller.rb, just before the end statement:
 
-```
+```ruby
   include ExceptionHandler
 ```
 
@@ -492,13 +491,13 @@ To prevent this attack, we need another security token. This is stored in a cook
 
 Add the following line to app/controllers/users/registrations\_controller.rb, right after the responds\_to line:
 
-```
+```ruby
   skip_forgery_protection only: [:create]
 ```
 
 The same line must be added to app/controllers/users/sessions\_controller.rb, at the same place. Then, add these lines to each of these files:
 
-```
+```ruby
       cookies["CSRF-TOKEN"] = form_authenticity_token
       response.set_header('X-CSRF-Token', form_authenticity_token)
 ```
@@ -507,13 +506,13 @@ They go right above the “signed up successfully” in the registrations contro
 
 At the top of the app/controllers/application\_controller.rb file, you will see this line:
 
-```
+```ruby
 class ApplicationController < ActionController::API
 ```
 
 One side effect is that forgery protection is disabled in Rails. So the line should be changed to read:
 
-```
+```ruby
 class ApplicationController < ActionController::Base
 ```
 
