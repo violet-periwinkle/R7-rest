@@ -10,7 +10,7 @@ Add the following lines to your Gemfile:
 
 First, in the section before the group :development, :test line, add these lines to get the swagger gem:
 
-```
+```ruby
 gem 'rspec-rails'
 gem 'rexml'
 gem 'rswag'
@@ -18,7 +18,7 @@ gem 'rswag'
 
 The rswag line is to add the swagger gem. Then, add a group :test section to your Gemfile, near the bottom, which should look like:
 
-```
+```ruby
 group :test do
   gem 'factory_bot_rails'
   gem 'faker'
@@ -37,7 +37,7 @@ bin/rails generate rswag:install
 
 You will need FactoryBot factories for test user, member, and fact entries. Create spec/factories/users.rb as follows:
 
-```
+```ruby
 require 'faker'
 
 FactoryBot.define do
@@ -50,7 +50,7 @@ end
 
 Create also spec/factories/members.rb as follows:
 
-```
+```ruby
 require 'faker'
 
 FactoryBot.define do
@@ -64,7 +64,7 @@ end
 
 Here we are managing the one-to-many relationship between users and members, by creating the user entry first, and then passing that as a parameter to the create of the member entry. Create also spec/factories/facts.rb as follows:
 
-```
+```ruby
 require 'faker'
 
 FactoryBot.define do
@@ -78,13 +78,13 @@ end
 
 We need to create tests for each of the controllers. Our tests must authenticate a user. For this, we need the Devise test helpers. So add this line to the bottom of spec/rails\_helper.rb, just before the final end:
 
-```
+```ruby
   config.include Devise::Test::IntegrationHelpers, type: :request
 ```
 
 Create spec/requests/registrations\_spec.rb, as follows:
 
-```
+```ruby
 require 'swagger_helper'
 
 RSpec.describe 'user/registrations', type: :request do
@@ -123,7 +123,7 @@ The swagger gem is here introducing some domain specific language into rspec. Th
 
 Create spec/requests/sessions\_spec.rb as follows:
 
-```
+```ruby
 require 'swagger_helper'
 
 describe 'sessions API' do
@@ -192,7 +192,7 @@ end
 
 Next we create a test for the members controller, and for each of the methods within that controller. Every method within the members controller requires authentication. Create spec/requests/api/v1/members\_spec.rb as follows:
 
-```
+```ruby
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/members', type: :request do
@@ -315,7 +315,7 @@ end
 
 Finally, we create the test file for facts, as spec/requests/api/v1/facts\_spec.rb:
 
-```
+```ruby
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/facts', type: :request do
@@ -439,7 +439,7 @@ end
 
 Edit spec/swagger\_helper.rb to read as follows:
 
-```
+```ruby
 # frozen_string_literal: true
 
 require 'rails_helper'
