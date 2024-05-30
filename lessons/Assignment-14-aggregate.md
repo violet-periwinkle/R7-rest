@@ -57,7 +57,7 @@ Monkeypatching is changing the runtime behavior of system code, in this case cod
 ## Changes for Cookie Handling
 
 Add the following code to config/application.rb.  These are the monkeypatches. They go right after the Bundler.require line.
-```
+```ruby
 module SetCookiePartitionFlag
   def set_cookie(key, value)
     cookie_header = get_header 'set-cookie'
@@ -129,31 +129,31 @@ class Rack::Session::Abstract::Persisted
 end
 ```
 Right after config.load_defaults, add this line:
-```
+```ruby
     config.action_controller.forgery_protection_origin_check = false
 ```
 Then, right after the ActionDispatch::Cookies line, add:
-```
+```ruby
     ActionDispatch::Cookies::CookieJar.always_write_cookie = true 
     # this will send secure cookies without SSL
 ```
 Finally, the line for ActionDispatch::Session::CookieStore should read as follows:
-```
+```ruby
     config.middleware.use ActionDispatch::Session::CookieStore, same_site: :None, 
       secure: true, partitioned: true, assume_ssl: true
 ```
 Also, the app/controllers/users/session_controller.rb, and the app/controllers/users/registrations_controller.rb, must be changed so that the cookie with the CSRF token has the right flags, as follows:
-```
+```ruby
   cookies["CSRF-TOKEN"] = { value: form_authenticity_token, secure: true, same_site: :None, partitioned: true }
 ```
 ## CORS Configuration
 
 Add this line to the Gemfile, in the main section (not in the stanzas for development or test):
-```
+```ruby
 gem "rack-cors"
 ```
 Then do a `bin/bundle install`.  This is the CORS gem.  You also have to create a configuration for it.  Change the file `config/initializers/cors.rb` to read:
-```
+```ruby
 # Be sure to restart your server when you modify this file.
 
 # Avoid CORS issues when API is called from the frontend app.
