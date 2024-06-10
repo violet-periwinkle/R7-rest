@@ -509,7 +509,9 @@ Then start your server as usual. You will find that you have a new route, so tha
 
 You will find that the logoff as well as all of the POST, PUT and DELETE request for members and facts don’t work. They return a long exception, because CSRF forgery checking is failing. This is because the CSRF token is not in the X-CSRF-Token header. You fix this as follows. Do the logon operation on the swagger page. You will see that the response comes back with a value in the X-CSRF-Token header. Copy that value, a long unintelligible string, to the clipboard. Then click on the authorize button at the upper right of the swagger page, and paste in the value. You will now find that the other operations complete correctly.
 
-## Submitting Your Work
+## Submitting Your Work and Final Project Proposal
 
 When you have verified that each of the operations on the swagger page works, you have completed the lesson. Use git to add, commit, and push your changes to the lesson13 branch, and then create a pull request as usual.
+
+In addition to the above assignment, you will need to start thinking about what project you will like to build for your final project. The rubric for the final project is located here: [Ruby on Rails Final Project Rubric](https://github.com/Code-the-Dream-School/R7-additional/wiki/Ruby-on-Rails-Final-Project-Rubric) Read through that page, come up with your idea for the final project that meets the requirements, and submit your plan using the last several questions on your usual Homework Assignment Submission Form. A mentor of the Ruby on Rails class will review your proposal and will communicate with you via Slack to let you know if you can begin your work or if your plan needs revisions before you can begin. Please contact the Class Coordinator if you have any questions.
 
