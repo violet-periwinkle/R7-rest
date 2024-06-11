@@ -9,7 +9,7 @@ This repository is the basis for lessons 12, 13, and 14 of the Code the Dream cl
 [Assignment 14](/lessons/Assignment-14-Calling-REST-from-JavaScript.md)  
 [Assignment 14b](/lessons/Assignment-14b-Support-for-CORS.md) 
 
-## Learning Objectives for Lesson 12
+## Learning Objectives for Lesson 12 (week 13)
 
 - Understand what web APIs are
 - Become familiar with the JSON data format
@@ -19,7 +19,7 @@ This repository is the basis for lessons 12, 13, and 14 of the Code the Dream cl
 - Add CRUD operations for database objects
 - Understand Cross Site Request Forgery and how to prevent it
 
-## Learning Objectives for Lesson 13
+## Learning Objectives for Lesson 13 (week 14)
 
 - Integrate Rspec and Swagger into the Rails Application
 - Build Rspec tests for logon and CRUD operations
@@ -27,7 +27,7 @@ This repository is the basis for lessons 12, 13, and 14 of the Code the Dream cl
 - Build Swagger definitions from Rspec tests
 - Practice with the Swagger UI
 
-## Learning Objectives for Lesson 14
+## Learning Objectives for Lesson 14 (week 15)
 
 - Build a front end for the REST API using HTML and JavaScrip9t
 - Make REST calls using fetch() from this front end
