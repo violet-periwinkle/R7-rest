@@ -177,7 +177,7 @@ This configuration will allow CORS requests, but only from the origin http://loc
 ## Testing for CORS
 
 You are going to run two instances of the Rails application.  The back end will run on port 3000, and the front end will run on port 3001, as follows:
-```
+```bash
 bin/rails s -p 3000 -P 3000
 bin/rails s -p 3001 -P 3001
 ```

@@ -3,7 +3,7 @@ The git repository with the starter Rails application for this lesson is [here.]
 
 The command we used to create this workspace was:
 
-```
+```bash
 rails new rest-rails --api -T
 ```
 You do NOT need to do the command to create the application, as you are instead using the starter repository above.  Note the –api parameter. This Rails application loads a subset of Rails. You can’t render views with it, but you can send and receive JSON documents, as we will see.
@@ -12,7 +12,7 @@ You do NOT need to do the command to create the application, as you are instead 
 
 You will need some additional gems. Add the following to your Gemfile. These settings should be added so that it is associated with development, test, and production. We can use the bundle add command as follows
 
-```
+```bash
 bin/bundle add devise
 bin/bundle add email_validator
 bin/bundle add strong_password
@@ -20,7 +20,7 @@ bin/bundle add strong_password
 
 Devise is a gem that enables authentication, and is widely used for that purpose in Rails applications. Devise, as we are using it, requires configuration of the Rails session. This is usually on by default, but in API only configurations, Rails turns it off, so we have to turn it back on. Add the following two lines to the config/application.rb, just before the two end statements at the bottom of this file:  
 
-```
+```ruby
 config.middleware.use ActionDispatch::Cookies
 config.middleware.use ActionDispatch::Session::CookieStore
 ```
@@ -29,7 +29,7 @@ This stores the Rails session information in a cookie, a little piece of additio
 
 Next we set up Devise. Enter the following commands:
 
-```
+```bash
 bin/rails g devise:install
 bin/rails g devise User
 bin/rails db:migrate
@@ -37,7 +37,7 @@ bin/rails db:migrate
 
 Update the app/models/user.rb file as follows:
 
-```
+```ruby
 class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, email: true
   validates :password, password_strength: true
@@ -59,7 +59,7 @@ This completes the initial setup.
 
 We need three controllers, one for user registration, one for session management, and one for testing logon. So, enter the following commands:
 
-```
+```bash
 bin/rails g controller users/Registrations
 bin/rails g controller users/Sessions
 bin/rails g controller test
@@ -67,7 +67,7 @@ bin/rails g controller test
 
 Edit app/controllers/users/registrations\_controller.rb, to match the following:
 
-```
+```ruby
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
@@ -91,7 +91,7 @@ end
 
 It is not really obvious what this controller does, but it overrides the Devise controller to handle JSON responses. The same is true of app/controllers/users/sessions\_controller.rb, which should be changed to match this:
 
-```
+```ruby
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
@@ -128,7 +128,7 @@ end
 
 In general, REST operations other than registration and logon require authentication. So we need a method to verify that a user has been authenticated. We create that method in a new file you should create, app/controllers/concerns/authentication\_check.rb, as follows:
 
-```
+```ruby
 module AuthenticationCheck
   extend ActiveSupport::Concern
   
@@ -143,7 +143,7 @@ end
 
 This is the standard way of creating a method that will be accessible to a variety of controllers. Now, edit app/controllers/test\_controller.rb to match the following. You will see that it calls the method is\_user\_logged\_in.
 
-```
+```ruby
 class TestController < ApplicationController
   include AuthenticationCheck
 
@@ -162,7 +162,7 @@ This is just a test controller to verify that login works.
 
 Now we need to configure routes for the controllers that have been created. config/routes.rb should be edited to match the following:
 
-```
+```ruby
 Rails.application.routes.draw do
   devise_for :users,
              controllers: {
@@ -175,7 +175,7 @@ end
 
 Also, add the following line to config/initializers/devise.rb, just before the last end statement:
 
-```
+```ruby
 config.navigational_formats = []
 ```
 
@@ -191,7 +191,7 @@ Create a request called test. This is a GET request, and the URL is http://local
 
 Next create a request called register. This is a POST request. The URL is http://localhost:3000/users . You need to put JSON in the body of the request. Click on body, select raw, and then in the pulldown to the right select JSON. Then paste in the following JSON:
 
-```
+```json
 {
     "user": {
         "email": "test@example.com",
@@ -204,7 +204,7 @@ You will see a message that the password is too weak. So, change the password in
 
 Create another request called logon. This is a POST request for the URL http://localhost:3000/users/sign in. The JSON in the body of the request is:
 
-```
+```json
 {
     "user": {
         "email": "test@example.com",
