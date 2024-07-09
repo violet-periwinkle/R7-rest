@@ -28,7 +28,7 @@ end
 
 When all of these changes have been made, do a bundle install to load the new gems. Then, complete the installation of the rswag and rspec-rails gems with these commands:
 
-```
+```bash
 bin/rails generate rspec:install
 bin/rails generate rswag:install
 ```
@@ -501,7 +501,7 @@ Now run rspec. It should complete without errors. If not, you may have problems 
 
 Type:
 
-```
+```bash
 bundle exec rake rswag:specs:swaggerize
 ```
 

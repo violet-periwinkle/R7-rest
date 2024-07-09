@@ -7,7 +7,7 @@ This lesson consists of **two parts**.  **Click the title of each part to expand
 
 The command we used to create this workspace was:
 
-```
+```bash
 rails new rest-rails --api -T
 ```
 You do NOT need to do the command to create the application, as you are instead using the starter repository above.  Note the –api parameter. This Rails application loads a subset of Rails. You can’t render views with it, but you can send and receive JSON documents, as we will see.
@@ -16,7 +16,7 @@ You do NOT need to do the command to create the application, as you are instead 
 
 You will need some additional gems. Add the following to your Gemfile. These settings should be added so that it is associated with development, test, and production. We can use the bundle add command as follows
 
-```
+```bash
 bin/bundle add devise
 bin/bundle add email_validator
 bin/bundle add strong_password
@@ -33,7 +33,7 @@ This stores the Rails session information in a cookie, a little piece of additio
 
 Next we set up Devise. Enter the following commands:
 
-```
+```bash
 bin/rails g devise:install
 bin/rails g devise User
 bin/rails db:migrate
@@ -53,7 +53,7 @@ end
 
 Then run the migration.
 
-```
+```bash
 bin/rails db:migrate
 ```
 
@@ -63,7 +63,7 @@ This completes the initial setup.
 
 We need three controllers, one for user registration, one for session management, and one for testing logon. So, enter the following commands:
 
-```
+```bash
 bin/rails g controller users/Registrations
 bin/rails g controller users/Sessions
 bin/rails g controller test
@@ -179,7 +179,7 @@ end
 
 Also, add the following line to config/initializers/devise.rb, just before the last end statement:
 
-```
+```ruby
 config.navigational_formats = []
 ```
 
@@ -195,7 +195,7 @@ Create a request called test. This is a GET request, and the URL is http://local
 
 Next create a request called register. This is a POST request. The URL is http://localhost:3000/users . You need to put JSON in the body of the request. Click on body, select raw, and then in the pulldown to the right select JSON. Then paste in the following JSON:
 
-```
+```json
 {
     "user": {
         "email": "test@example.com",
@@ -208,7 +208,7 @@ You will see a message that the password is too weak. So, change the password in
 
 Create another request called logon. This is a POST request for the URL http://localhost:3000/users/sign in. The JSON in the body of the request is:
 
-```
+```json
 {
     "user": {
         "email": "test@example.com",
@@ -238,7 +238,7 @@ In this part of the assignment, you continue to work on the lesson12 branch.  Of
 
 First, create your models. WIthin the repository directory, you do the following commands:
 
-```
+```bash
 bin/rails generate model Member first_name:string last_name:string user:references
 bin/rails generate model Fact member:references fact_text:string likes:integer
 ```
@@ -271,7 +271,7 @@ end
 
 Note that you have validations, just as in Rails UI applications with views. Next, you set up the development and test databases as follows:
 
-```
+```bash
 bin/rails db:migrate
 bin/rails db:migrate RAILS_ENV=test
 ```
@@ -280,7 +280,7 @@ bin/rails db:migrate RAILS_ENV=test
 
 Now, you set up your controllers. We are going to set them up with a route namespace, that includes a version number for the API. This is best practice, as your API may change over time.
 
-```
+```bash
 bin/rails g controller api/v1/Members
 bin/rails g controller api/v1/Facts
 ```
@@ -471,7 +471,7 @@ Then add this line to app/controllers/application\_controller.rb, just before th
 
 Postman will send JSON to the URL you specify, and will also report back the JSON it receives. You can send the following commands, to see what happens. First, start the server using 
 
-```
+```bash
 bin/rails s 
 ```
 
@@ -520,7 +520,7 @@ Once these changes are in place, you can restart the server and retest using Pos
 
 To get these other requests working again, you need a way to capture the CSRF token. First, in Postman, click on the New at the top of the window and select Environment. Give your new environment some name. This is where the token will be stored. When you finish, the name of the environment you created should be in the upper right of the window. Then edit the registration request, and click on the tests tab. Add the following line:
 
-```
+```javascript
 pm.environment.set("CSRF",pm.cookies.get('CSRF-TOKEN'))
 ```
 
